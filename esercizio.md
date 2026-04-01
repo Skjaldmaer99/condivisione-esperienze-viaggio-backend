@@ -1,0 +1,127 @@
+# **Esercitazione Laravel + React: Piattaforma di Condivisione di Esperienze di Viaggio**
+
+## **Descrizione**
+
+Sviluppare una piattaforma web in cui gli utenti possono condividere esperienze di viaggio, lasciare recensioni su luoghi visitati e commentare i post degli altri. Gli utenti registrati potranno creare diari di viaggio e interagire con la community.
+
+## **Obiettivi Formativi**
+
+- Implementare operazioni CRUD in Laravel
+- Creare e gestire migrations per il database
+- Implementare form e validazione dati
+- Fornire un interfaccia utente responsive e accessibile
+- Utilizzare Laravel Sanctum per la gestione dell'autenticazione
+- Utilizzare React per la creazione dell'interfaccia utente
+
+## **Requisiti Tecnici**
+
+- Laravel
+- Database PostgreSQL
+- Tailwind CSS
+- React
+
+## **Struttura del Progetto**
+
+### **1. Database Migrations**
+
+Creare le seguenti migrations:
+
+```php
+- create_travel_posts_table
+  - id
+  - title (string)
+  - location (string)
+  - country (string) // in base al paese, si potrà mostrare la bandiera corrispondente
+  - description (text)
+  - user_id (foreign key)
+  - timestamps
+
+- create_users_table
+  - id
+  - name (string)
+  - email (string, unique)
+  - password (string)
+  - timestamps
+
+- create_comments_table
+  - id
+  - user_id (foreign key)
+  - travel_post_id (foreign key)
+  - comment (text)
+  - timestamps
+
+- create_likes_table
+  - id
+  - user_id (foreign key)
+  - travel_post_id (foreign key)
+  - timestamps
+```
+
+### **2. Controllers da Implementare**
+
+```php
+- TravelPostController
+  - index() // mostra la lista dei post
+  - show() // visualizza il dettaglio di un post
+  - store() // salva un nuovo post
+  - update() // aggiorna un post
+  - destroy() // elimina un post
+
+- UserController
+  - show() // mostra il profilo di un utente
+  - create() // form per la registrazione
+  - store() // salva un nuovo utente
+
+- CommentController
+  - store() // salva un commento a un post
+  - destroy() // elimina un commento
+
+- LikeController
+  - store() // aggiunge o rimuove un "mi piace"
+```
+
+### **3. Routes da Implementare**
+
+```php
+- /travel-posts (resource routes)
+- /users (resource routes, almeno per la registrazione e visualizzazione del profilo)
+- /comments (route per salvataggio ed eliminazione commenti)
+- /likes (route per gestire i "mi piace")
+```
+
+### **4. Pagine**
+
+- Layout principale condiviso
+- Post di viaggio:
+  - Lista
+  - Dettaglio
+  - Form per creazione/modifica
+- Utenti:
+  - Profilo
+  - Form di registrazione
+- Sezioni per commenti e "mi piace" integrate nella view di dettaglio del post
+
+## **Funzionalità Richieste**
+
+### **Base (Obbligatorie)**
+
+1. CRUD per la gestione dei post di viaggio
+2. Registrazione e gestione del profilo utente
+3. Possibilità di commentare i post
+4. Possibilità di mettere "mi piace" ai post
+5. Visualizzazione liste e dettagli dei post
+6. Form con validazione
+
+### **Avanzate (Extra)**
+
+1. Ricerca post per destinazione
+2. Caricamento e gestione delle immagini nei post
+3. Dashboard con statistiche (post più popolari, utenti più attivi, ecc.)
+4. Funzionalità di "post preferiti" per gli utenti
+5. Paginazione e ordinamento dei post
+
+## **Modalità di Consegna**
+
+- Repository GitHub contenente:
+  - Codice sorgente completo
+- Link del repository da condividere
