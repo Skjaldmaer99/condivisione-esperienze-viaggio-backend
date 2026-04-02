@@ -5,14 +5,14 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -23,10 +23,7 @@ class StoreUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ["required", "min:1", "max:100"],
-            "email" => ["required", "min:1", "max:100"],
-            "password" => ["required", "min:8", "max:100"],
-            'img' => ['nullable', 'image', 'max:2048'],
+            //
         ];
     }
 }

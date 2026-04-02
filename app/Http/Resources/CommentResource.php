@@ -2,13 +2,11 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Comment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Storage;
 
-class TravelPostResource extends JsonResource
+class CommentResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,14 +17,10 @@ class TravelPostResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "title" => $this->title,
-            "location" => $this->location,
-            "country" => $this->country,
-            "description" => $this->description,
-            "img" => $this->img ? Storage::url($this->img) : null, // cambia FILESYSTEM_DISK=local da local a public per avere il path completo
+            "travel_post_id" => $this->travel_post_id,
             "user_id" => $this->user_id,
+            "comment" => $this->comment,
             "user" => new UserResource(User::find($this->user_id)),
-            "comments" => CommentResource::collection(Comment::where("travel_post_id", $this->id)->get()),
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at
         ];

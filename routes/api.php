@@ -16,6 +16,7 @@ Route::controller(AuthController::class)->group(function() {
 // Rotte pubbliche, accessibili a tutti
 Route::get('/posts', [TravelPostController::class, 'index']);      // lista post
 Route::get('/posts/{id}', [TravelPostController::class, 'show']); // singolo post
+Route::get('/users', [UserController::class, 'index']); // tutti utenti
 
 // il middleware si occupa di verificare l'autenticazione
 Route::middleware(['auth:sanctum'])->group(function () {

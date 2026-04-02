@@ -10,24 +10,41 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class AuthController extends Controller
 {
     public function register(RegisterRequest $request) {
-        $data = $request->validated();
+        $imagePath = null;
 
-        $user = User::create([
-            "name" => $data['name'],
-            "email" => $data['email'],
-            "password" => Hash::make($data['password'])
-        ]);
+        try {
+            if($request->hasFile('img')) {
+                $imagePath = $request->file('img')->store('users', 'public');
+            }
+            
+            $data = $request->validated();
 
-        event(new Registered($user));
+            $user = User::create([
+                "name" => $data['name'],
+                "email" => $data['email'],
+                "img" => $imagePath,
+                "password" => Hash::make($data['password'])
+            ]);
 
-        return response()->json([
-            'message' => "Registrazione completata con successo",
-            "user" => $user
-        ], 201);
+            event(new Registered($user));
+
+            return response()->json([
+                'success' => true,
+                'message' => "Registrazione completata con successo",
+                "user" => new UserResource($user)
+            ], 201);
+        } catch(\Throwable $th) {
+            if($imagePath) {
+                Storage::disk('public')->delete($imagePath);
+            }
+            
+            throw $th;
+        }
     }
 
     public function login(LoginRequest $request) {
@@ -44,7 +61,7 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'Login effettuato con successo',
-            'user' => $user,
+            'user' => new UserResource($user),
             'token' => $token
         ]);
     }
