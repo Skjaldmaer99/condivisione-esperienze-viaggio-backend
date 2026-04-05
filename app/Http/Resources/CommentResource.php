@@ -20,7 +20,8 @@ class CommentResource extends JsonResource
             "travel_post_id" => $this->travel_post_id,
             "user_id" => $this->user_id,
             "comment" => $this->comment,
-            "user" => new UserResource(User::find($this->user_id)),
+            /* "user" => new UserResource(User::find($this->user_id)), */
+            "user" => new UserResource($this->user),
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at
         ];

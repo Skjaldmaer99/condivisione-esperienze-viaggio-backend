@@ -38,6 +38,7 @@ class UserController extends Controller
     public function show(string $id)
     {
         $user = User::find($id);
+        /* $user = User::with(['posts', 'comments'])->find($id); */
         if(!$user) {
             return response()->json([
                 "success" => false,
@@ -55,6 +56,7 @@ class UserController extends Controller
     {
         try {
             $user = User::find($id);
+            /* $user = User::with(['posts', 'comments'])->find($id); */
 
             $oldImagePath = $user->img;
             $newImagePath = $oldImagePath;

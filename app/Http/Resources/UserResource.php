@@ -3,6 +3,8 @@
 namespace App\Http\Resources;
 
 use App\Models\Comment;
+use App\Models\Like;
+use App\Models\TravelPost;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
@@ -17,11 +19,13 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            //'img' => $this->img ? Storage::url($this->img) : null, // cambia FILESYSTEM_DISK=local da local a public per avere il path completo
             'img' => $this->img ? Storage::disk('public')->url($this->img) : null,
-            'comments' => Comment::find($this->user_id),
+            //"likes" => Like::where("user_id", $this->id)->get(),
+            //"comments" => CommentResource::collection(Comment::where("user_id", $this->id)->get()),
+            /* "comments" => CommentResource::collection($this->comments), */
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
         ];

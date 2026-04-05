@@ -17,7 +17,15 @@ class TravelPostController extends Controller
      */
     public function index()
     {
-        return TravelPostResource::collection(TravelPost::paginate(6));
+        //return TravelPostResource::collection(TravelPost::paginate(6));
+        return TravelPostResource::collection(
+    TravelPost::with(['comments' => function($query) {
+        $query->orderBy('created_at', 'desc');
+    }])->orderBy('created_at', 'desc')
+    ->paginate(6)
+
+    //return TravelPostResource::collection(TravelPost::with(['comments' =>]))
+);
     }
 
 

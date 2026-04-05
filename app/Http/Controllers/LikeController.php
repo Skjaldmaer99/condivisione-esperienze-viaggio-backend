@@ -12,7 +12,7 @@ class LikeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreLikeRequest $request, $id)
+    /* public function store(StoreLikeRequest $request, $id)
     {
         try {
             $like = Like::create([
@@ -31,9 +31,9 @@ class LikeController extends Controller
                 "message" => $e->getMessage(),
             ]);
         }
-    }
+    } */
 
-    public function destroy(TravelPost $post, Like $like)
+/*     public function destroy(TravelPost $post, Like $like)
     {
         try {
             if($like->travel_post_id !== $post->id) {
@@ -61,7 +61,22 @@ class LikeController extends Controller
                     "message" => $e->getMessage()
                 ]);
         }
+    } */
 
+    public function toggle(TravelPost $post) {
+        $like = Like::where('user_id', auth()->id())
+            ->where('travel_post_id', $post->id)
+            ->first();
 
+        if ($like) {
+            $like->delete();
+            return response()->json(['liked' => false]);
+        }
+
+        $post->likes()->create([
+            'user_id' => auth()->id()
+        ]);
+
+        return response()->json(['liked' => true]);
     }
 }
