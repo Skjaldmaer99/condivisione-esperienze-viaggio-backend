@@ -32,4 +32,10 @@ class TravelPost extends Model
     {
         return $this->hasMany(Like::class);
     }
+    
+    // Relazione con bookmarks
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class);
+    }
 }

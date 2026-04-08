@@ -59,4 +59,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Like::class);
     }
+    
+    // Relazione con bookmarks
+    public function bookmarks()
+    {
+        return $this->hasMany(Bookmark::class);
+    }
 }

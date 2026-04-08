@@ -15,17 +15,41 @@ class TravelPostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //return TravelPostResource::collection(TravelPost::paginate(6));
-        return TravelPostResource::collection(
-    TravelPost::with(['comments' => function($query) {
-        $query->orderBy('created_at', 'desc');
-    }])->orderBy('created_at', 'desc')
-    ->paginate(6)
+    public function index(Request $request)
+    {    
+        $posts = TravelPost::with(['comments' => function ($query) {
+            $query->orderBy('created_at', 'desc');
+        }])
+        ->when($request->search, function ($q, $search) {
+            $q->where(function ($q2) use ($search) {
+            $q2->whereRaw('LOWER(location) LIKE ?', ['%' . strtolower($search) . '%'])
+            ->orWhereRaw('LOWER(country) LIKE ?', ['%' . strtolower($search) . '%']);
+            });
+        })
+        ->orderBy('created_at', 'desc')
+        ->paginate(6);
 
-    //return TravelPostResource::collection(TravelPost::with(['comments' =>]))
-);
+        return TravelPostResource::collection($posts);
+    }
+
+    public function topLiked(Request $request)
+    {    
+        $posts = TravelPost::withCount('likes')
+        ->orderBy('likes_count', 'desc')
+        ->take(3)
+        ->get();
+
+        return TravelPostResource::collection($posts);
+    }
+
+    public function topBookmarked(Request $request)
+    {    
+        $posts = TravelPost::withCount('bookmarks')
+        ->orderBy('bookmarks_count', 'desc')
+        ->take(3)
+        ->get();
+
+        return TravelPostResource::collection($posts);
     }
 
 
@@ -147,23 +171,32 @@ class TravelPostController extends Controller
     public function destroy(string $id)
     {
         $post = TravelPost::find($id);
-        $imagePath = $post->img;
-        
-        if($post->user_id !== auth()->id()) {
+
+        if (!$post) {
+            return response()->json([
+                "success" => false,
+                "message" => "Post non trovato"
+            ], 404);
+        }
+
+        if ($post->user_id !== auth()->id()) {
             return response()->json([
                 "success" => false,
                 "message" => "Non autorizzato"
-            ]);
+            ], 403);
         }
 
+        $imagePath = $post->img;
+
         $post->delete();
-        if($imagePath) {
+
+        if ($imagePath) {
             Storage::disk('public')->delete($imagePath);
         }
 
         return response()->json([
             "success" => true,
             "message" => "Post eliminato correttamente"
-        ], 204);
+        ], 200);
     }
 }

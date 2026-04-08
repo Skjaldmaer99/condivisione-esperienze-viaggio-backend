@@ -11,16 +11,19 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    /**
-     * Show the form for creating a new resource.
-     */
-/*     public function create()
-    {
-        $user->
-    } */
     public function index()
     {
         return UserResource::collection(User::paginate(6));
+    }
+    
+    public function topUsers()
+    {
+        $users = User::withCount('travelPosts')
+        ->orderBy('travel_posts_count', 'desc')
+        ->take(4)
+        ->get();
+
+        return UserResource::collection($users);
     }
 
 
