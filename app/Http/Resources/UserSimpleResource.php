@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Storage;
 
-class UserResource extends JsonResource
+class UserSimpleResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,7 +20,6 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'img' => $this->img ? Storage::disk('public')->url($this->img) : null,
-            'travelPosts' => TravelPostResource::collection($this->travelPosts),
             'createdAt' => $this->created_at,
             'updatedAt' => $this->updated_at,
         ];

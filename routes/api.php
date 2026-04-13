@@ -22,6 +22,7 @@ Route::get('/posts/bookmarks', [BookmarkController::class, 'list'])->middleware(
 Route::get('/posts', [TravelPostController::class, 'index']);      // lista post
 Route::get('/posts/{id}', [TravelPostController::class, 'show']); // singolo post
 Route::get('/users', [UserController::class, 'index']); // tutti utenti
+Route::get('/users/{id}', [UserController::class, 'show']); // singolo user (non per forza quello autenticato)
 
 // il middleware si occupa di verificare l'autenticazione
 Route::middleware(['auth:sanctum'])->group(function () {

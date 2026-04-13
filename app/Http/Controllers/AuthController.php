@@ -80,6 +80,7 @@ class AuthController extends Controller
         ]);
     }
 
+    // restituisce l'utente autenticato
     public function user() {
         return new UserResource(Auth::user());
     }
