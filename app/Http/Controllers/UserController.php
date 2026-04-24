@@ -65,12 +65,14 @@ class UserController extends Controller
             $oldImagePath = $user->img;
             $newImagePath = $oldImagePath;
 
-            if($user->id !== auth()->id()) {
+            $this->authorize('update', $user);
+            
+            /* if($user->id !== auth()->id()) {
                 return response()->json([
                     "success" => false,
                     "message" => "Non autorizzato",
                 ]);
-            }
+            } */
 
             $data = $request->validated();
 

@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Resources\TravelPostResource;
 use App\Models\Bookmark;
 use App\Models\TravelPost;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 
 class BookmarkController extends Controller
 {
+    use AuthorizesRequests;
+    
     public function list()
     {
         try {
@@ -19,12 +22,10 @@ class BookmarkController extends Controller
                 $query->where('user_id', $userId);
             })
             ->get();
-    
-            return TravelPostResource::collection($posts);
 
             return response()->json([
                 'success' => true,
-                'data' => $posts
+                'data' => TravelPostResource::collection($posts)
             ]);
 
         } catch(\Exception $e) {

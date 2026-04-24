@@ -100,7 +100,6 @@ return [
             'throttle' => 60,
         ],
     ],
-
     /*
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout
@@ -114,4 +113,8 @@ return [
 
     'password_timeout' => env('AUTH_PASSWORD_TIMEOUT', 10800),
 
+    // per la route verify in api.php
+    'verification' => [
+        'expire' => (int) env('AUTH_VERIFICATION_EXPIRE', 60)
+    ]
 ];

@@ -6,12 +6,14 @@ use App\Http\Requests\StoreTravelPostRequest;
 use App\Http\Requests\UpdateTravelPostRequest;
 use App\Http\Resources\TravelPostResource;
 use App\Models\TravelPost;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class TravelPostController extends Controller
 {
+    use AuthorizesRequests;
     /**
      * Display a listing of the resource.
      */
