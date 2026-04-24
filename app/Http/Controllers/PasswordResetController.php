@@ -27,7 +27,7 @@ class PasswordResetController extends Controller
             'email' => $data['email']
         ]);
 
-        dd($status);
+        /* dd($status); */
 
         return response()->json([
             'success' => true,
